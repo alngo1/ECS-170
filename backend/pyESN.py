@@ -171,14 +171,14 @@ class ESN():
         # transform input and teacher signal:
         inputs_scaled = self._scale_inputs(inputs)
         teachers_scaled = self._scale_teacher(outputs)
+        print(inputs_scaled.shape, teachers_scaled.shape)
 
         if not self.silent:
             print("harvesting states...")
         # step the reservoir through the given input,output pairs:
         states = np.zeros((inputs.shape[0], self.n_reservoir))
         for n in range(1, inputs.shape[0]):
-            states[n, :] = self._update(states[n - 1], inputs_scaled[n, :],
-                                        teachers_scaled[n - 1, :])
+            states[n, :] = self._update(states[n - 1], inputs_scaled[n, :], teachers_scaled[n - 1, :])
 
         # learn the weights, i.e. find the linear combination of collected
         # network states that is closest to the target output

@@ -1,0 +1,90 @@
+  // ignore the names i took this from a prev project
+  .notification-header {
+    display: flex;
+    width: 87.25%;
+    height: fit-content;
+    padding-top: 5.875%;
+    padding-left: 7.5%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .notification-header-text {
+    font-family: "Inter";
+    color: #eee;
+    font-weight: 800;
+    letter-spacing: -0.25px;
+    font-size: clamp(8px, 5vw, 21px);
+  }
+  .notification-header-subtext {
+    font-family: "Rubik";
+    color: #ababab;
+    padding-top: .8em;
+    font-weight: 400;
+    line-height: 19px;
+    font-size: clamp(6px, 4em, 14px);
+  }
+  .notification-body-content {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .notification-header-subtext-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    padding-top: .35em;
+    gap:.35em;
+  }
+  .notification-container {
+    width: 30%;
+    max-height: 27.5%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 2.25vw;
+    right: 0;
+    outline: 1px solid #252525;
+    z-index: 999;
+    background-color: #1c1c1c;
+    top:30%;
+    border-radius: 14px;
+    padding-bottom: 1.375%;
+    position: absolute;
+  }
+  .notification-footer-container {
+    display: flex;
+    overflow: visible;
+    width: 96%;
+    margin-top: 2.75%;
+    align-self: flex-start;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+  .notification-footer-button {
+    width: 22.75%;
+    height: 100%;
+    padding-top: .6em;
+    padding-bottom: .6em;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    transition: all .2s linear;
+    align-items: flex-end;
+    background-color: rgba(89, 201, 151, 0.55);
+  }
+  .notification-footer-button:hover {
+    filter: brightness(1.1);
+  }
+  .notification-footer-button-text {
+    font-family: "Rubik";
+    color: #eee;
+    font-weight: 600;
+    user-select: none;
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
+    overflow: hidden;
+    font-size: clamp(6px, 3em, 14.5px);
+  }

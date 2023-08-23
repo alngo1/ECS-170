@@ -1,0 +1,91 @@
+// ignore the names i took this from a prev project
+.side-navigation {
+    display: block;
+    top:17.5vh;
+    align-items: center;
+    border-radius: 4em;
+    padding-top: 3em;
+    padding-bottom: 1.25em;
+    padding-right: .75em;
+    padding-left: .7em;
+    position: absolute;
+    right:3.5vh;
+    flex-direction: column;
+    min-height: 50%;
+    justify-content: space-between;
+  }
+  .navigation-item-container {
+    height:18vh;
+    min-width:5vw;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap:.2em;
+    align-self: center;
+  }
+  .navigation-item {
+    min-width: 4vw;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    transition: all .15s linear;
+    min-height:4vw;
+    z-index: 999;
+    border-radius: 90px;
+    transition: all .15s linear;
+    background-color: #3a3a3a;
+  }
+
+  .navigation-item-text {
+    color:#bbbbbb;
+    padding-top: 9px;
+    font-size:clamp(10px,2vw,12px);
+    font-family:'Inter';
+    font-weight: 500;
+    text-align: center;
+   // transform: translateX(.05em);
+    align-self: center;
+  }
+  .settings-icon {
+    transition: all .15s linear;
+    min-width: 1.865vw;
+    min-height:1.865vw;
+    color:rgba(240,240,240,1);
+  }
+  .archive-icon {
+    transition: all .15s linear;
+    padding-top: 3px;
+    min-width: 2vw;
+    min-height:2vw;
+    transform: rotate(-90deg) scaleY(.975) translateX(.05em);
+    color:rgba(240,240,240,1);
+  }
+  .feedback-icon {
+    transition: all .15s linear;
+    min-width: 1.8vw;
+    padding-top: 1.5px;
+    z-index: 1;
+    padding-right:2px;
+    transform: rotate(-20deg);
+    min-height:1.8vw;
+    color:rgba(240,240,240,1);
+  }
+  .navigation-item:hover .settings-icon {
+    transform: scale(1.125) rotate(45deg);
+  }
+  .navigation-item:hover .archive-icon {
+    color: rgb(251, 221, 123);
+  }
+  .navigation-item:hover .feedback-icon {
+    transform: rotate(0deg); 
+  }
+  .cart-side-icon {
+    min-width: 1.75vw;
+    min-height: 1.75vw;
+    color:rgba(240,240,240,1);
+    transition: all .125s linear;
+  }
+  .cart-side-icon:hover {
+    transform: scale(1.15);
+  }

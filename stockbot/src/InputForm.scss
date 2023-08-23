@@ -1,0 +1,279 @@
+
+input {
+    color:#eee;
+    background-color: #252525;
+    z-index: 1;
+    border: none;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #eee;
+    -webkit-box-shadow: 0 0 0 30px #252525ff inset !important;
+    transition: background-color 2147483647s;
+    caret-color: #eee;
+}
+.input-form-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+  
+}
+.form-content {
+    display: flex;
+    min-width: 100%;
+    min-height: 100%;
+    padding-top:2em;
+    flex-direction: column;
+}
+.fields-container {
+    min-width: 100%;
+    height:100%;
+    gap:1.25em;
+    display: flex;
+    flex-direction: column;
+}
+.input-container {
+    width: 95%;
+    min-height:25%;
+    display:flex;
+    flex-direction: column;
+}
+.input-date-container {
+    display: flex;
+    justify-content: flex-start;
+    gap:1.2em;
+   min-height: 25%;
+   padding-left: .125em;
+    width: 96.25%;
+}
+.start-date-container {
+    width: 47.5%;
+    display:flex;
+    flex-direction: column;
+}
+.end-date-container {
+    width: 47.5%;
+    min-height:25%;
+    display:flex;
+    flex-direction: column;
+}
+.input-header-text-alt {
+    font-size: clamp(10px, 3vw, 16px);
+    font-family: "Rubik";
+    margin-right: auto;
+    line-height: 30px;
+    padding-bottom: .25em;
+    letter-spacing: -.25px;
+    font-weight: 600;
+    color: #eee;
+}
+.input-header-text {
+    font-size: clamp(10px, 3vw, 16px);
+    font-family: "Rubik";
+    margin-right: auto;
+    line-height: 30px;
+    padding-left: .125em;
+    padding-bottom: .25em;
+    letter-spacing: -.25px;
+    font-weight: 600;
+    color: #eee;
+}
+.input-wrapper {
+    width: 100%;
+    min-height:50%;
+    display: flex;
+    padding-top: .125em;
+    padding-bottom: .125em;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 12px;
+    background-color: #252525;
+}
+
+.input-content {
+    width: 100%;
+    border-radius: 12px;
+    padding-left: 1.25em;
+    color:#eee;
+    outline:none;
+    align-self: center;
+    border:none;
+    background-color: #252525;
+    min-height:100%;
+}
+.input-content-alt {
+    width: 80.75%;
+    border-radius: 12px;
+    padding-left: 1.25em;
+    color:#eee;
+    outline:none;
+    align-self: flex-start;
+    border:none;
+    background-color: transparent;
+    min-height:100%;
+}
+.input-content-alt::placeholder {
+    font-size: clamp(10px, 3vw, 14px);
+    font-family: "Rubik";
+    font-weight: 400;
+    color: #656565;
+}
+.input-content::placeholder {
+    font-size: clamp(10px, 3vw, 14px);
+    font-family: "Rubik";
+    font-weight: 400;
+    color: #656565;
+}
+
+.submit-button {
+    width: 47.5%;
+    border-radius: 12px;
+    margin-top:1em;
+    margin-left: .125em;
+    display: flex;
+    filter: contrast(1.05) brightness(1.05);
+    transition: all .15s linear;
+    box-shadow: 0px 0px 8px 0px rgba(55, 187, 172, 0.4);
+    justify-content: center;
+    //background-color: rgba(204, 212, 151, 0.85);
+    //background-color: rgba(55, 187, 172, 0.8);
+    //background: linear-gradient(-90deg, rgba(212, 76, 169, 0.85), rgba(161, 79, 182, 0.85));
+    background: linear-gradient(-90deg, rgba(46, 186, 170, 0.85), rgba(86, 153, 220, 0.85));
+    align-items: center;
+    padding-top: .75em;
+    padding-bottom: .75em;
+}
+.submit-button:hover {
+    box-shadow: 0px 0px 8px 4px rgba(53, 189, 201, 0.4);
+}
+.submit-text {
+    font-size: clamp(12px, 3vw, 18.5px);
+    font-family: "Rubik";
+    margin-right: auto;
+    margin-left:auto;
+    font-weight: 400;
+    color: #000;
+}
+.button-icon {
+    position: absolute;
+    right:0;
+    padding-right: 1em;
+    transform: translateX(-.1em) scale(1.1);
+    color: #0a0a0a;
+    width: 1.5em;
+    padding-bottom: .025em;
+    height: 1.5em;
+}
+.calender-icon {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: all .15s linear;
+    color: #858585;
+}
+.calender-icon-alt {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: all .15s linear;
+    color: #959595;
+}
+.calender-icon-wrapper {
+    width: fit-content;
+    height: fit-content;
+    transition: all .15s linear;
+    width: 1.125em;
+    height: 1.125em;
+}
+.calender-icon-wrapper:hover {
+    transform: scale(1.125);
+}
+.calender-icon-wrapper:hover .calender-icon,
+.calender-icon-wrapper:hover .calender-icon-alt {
+    color:#ccc;
+}
+.calender-container {
+    color:#eee;
+    transform: translateY(1.125em);
+    background-color: #25252555;
+    outline: 1px solid #252525d5;
+    border-radius: 1em;
+    box-shadow: 2px 2px 0px 4px rgba(10,10,10,0.4);
+    margin-left: 3.75em;
+    height: 100%;
+    transition: all .15s linear;
+
+}
+.calender-container-alt {
+    z-index: -1;
+    opacity: 0;
+    pointer-events: none;
+    background-color: #25252555;
+    outline: 1px solid #252525d5;
+    transform: translateY(1.125em);
+    border-radius: 1em;
+    margin-left: 3.75em;
+    height: 100%;
+    transition: all .15s linear;
+}
+.MuiDateCalendar-root {
+    & .MuiPickersDay-root.Mui-selected  {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: rgba(42, 176, 161, 0.7) !important;
+        &:hover {
+            background-color: rgba(32, 181, 163, 0.8) !important;
+        }
+    }
+    & .MuiPickersDay-root:not(.Mui-selected)  {
+        transition: all .15s linear;
+        &:hover {
+            background-color: rgba(32, 181, 163, 0.15) !important;
+        }
+    }
+    & .MuiPickersDay-root {
+        line-height: normal;
+    }
+    & .MuiPickersDay-dayWithMargin {
+        color:#eee;
+    }
+    & .MuiPickersDay-dayWithMargin.MuiPickersDay-today.Mui-selected {
+        border: 0px solid #656565;
+    }
+    & .MuiPickersDay-dayWithMargin.MuiPickersDay-today {
+        border: 1px solid #656565;
+    }
+    & .MuiTypography-root {
+        user-select: none;
+        -webkit-user-select: none; 
+        -moz-user-select: none; 
+        -ms-user-select: none;
+        color:#aaa;
+    }
+    & .MuiSvgIcon-root {
+        color:#eee;
+    }
+    & .Mui-selected {
+        background-color: rgba(46, 186, 170, 0.7);
+        &:hover {
+            background-color: rgba(32, 181, 163, 0.8);
+        }
+    }
+    & .MuiPickersDay-dayOutsideMonth {
+        color:#777;
+    }
+    color:#eee;
+}
+
+@media (max-width: 1146px) {
+    .calender-icon-alt {
+        display: none;
+    }
+    .calender-icon {
+        display: none;
+    }
+}

@@ -1,16 +1,11 @@
-
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import os
-
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # silence tensorflow warnings
-
-import tensorflow as tf
 import yfinance as yf
 from pyESN import ESN
 import matplotlib.pyplot as plt
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -44,7 +39,15 @@ def grab_data(symbol, start_date, end_date, intervals):
 def MSE(prediction, actual):
     return np.mean(np.power(np.subtract(np.array(prediction),actual),2))
 
-@app.get("/run_echo")
+class DataModel(BaseModel):
+    data: list[float]
+
+@app.post("/run_echo")
+def run_echo_endpoint(data:DataModel):
+    print(data)
+    result = run_echo(data.data)
+    return {'result':result}
+
 def run_echo(data, reservoir_size=500, sr=1.2, n=0.005, window=5):
     esn = ESN(n_inputs = 1,
           n_outputs = 1,
@@ -53,18 +56,22 @@ def run_echo(data, reservoir_size=500, sr=1.2, n=0.005, window=5):
           random_state=23,
           spectral_radius=sr,
           noise = n)
-
     trainlen = 100
     current_set = []
     for i in range(0,100):
-        pred_training = esn.fit(np.ones(trainlen),data[i:trainlen+i])
+        pred_training = esn.fit(np.ones(trainlen),np.array(data[i:trainlen+i]))
         prediction = esn.predict(np.ones(window))
         current_set.append(prediction[0])
     current_set = np.reshape(np.array(current_set),(-1,100))
-    mse = MSE(current_set, data[trainlen:trainlen+100])
+    mse = MSE(current_set, np.array(data[trainlen:trainlen+100]))
     return (mse, current_set)
 
+
 @app.post('/future_pred')
+def future_pred_endpoint(data: DataModel):
+    result = future_pred(data.data)
+    return {'result':result}
+
 def future_pred(data, reservoir_size=500, sr=1.2, n=0.005, window=5):
     esn = ESN(n_inputs = 1,
           n_outputs = 1,
@@ -73,11 +80,11 @@ def future_pred(data, reservoir_size=500, sr=1.2, n=0.005, window=5):
           random_state=23,
           spectral_radius=sr,
           noise = n)
-    pred_training = esn.fit(np.ones(100),data[-100:])
+    pred_training = esn.fit(np.ones(100),np.array(data[-100:]))
     prediction = esn.predict(np.ones(window))
     return prediction.reshape(-1)
 
-d
+
 @app.get("/compute/")
 def compute_endpoint(x: int, y: int):
     return {"result": compute_something(x, y)}
@@ -86,7 +93,10 @@ def compute_something(x: int, y: int) -> int:
     return x + y
 
 def main():
-    print('sup')
+    data = grab_data('AAPL', '2023-01-01', '2023-07-01', '1d')
+    print('data: ',len(data))
+    prediction = future_pred(data, 500, 1.2, 0.005, 5)
+    print(prediction)
     '''
     st.title("Stock Price Prediction App")
 
