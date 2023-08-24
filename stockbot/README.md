@@ -1,70 +1,11 @@
-# Getting Started with Create React App
+Stock Prediction Bot
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repo contains both the frontend and backend for the project. The frontend is located in the `/stockbot` folder, where the components are located in `/src`. To open the web application, move into the `/stockbot` directory and open up a terminal. Run `npm start`, and a development server should open in your browser. If there are package dependancy issues, make sure that `package.json` is not empty, and run `npm install` to load all of the required packages. 
 
-## Available Scripts
+`App.js` is our main page for the frontend, and `app.py` (located in `/backend`) is where our API is located, and where we are making requests to. Backend requests are done through `axios`, and the responses are saved in `stockData`, `predicationData`, and `echoData` for each respective backend function. To test, click on one of the icons in the right-hand side panel, where a notification should show up that displays the response status.
 
-In the project directory, you can run:
+While `grab_data` works with any date range, `future_pred` only works when the size of `stockData` is greater than 100, so for a test case, use 2023-01-01 to 2023-05-26 (or greater).
 
-### `npm start`
+The stylesheets were made using scss, but almost all of the code would function the same as if we were using regular css, and we're mainly just using it for single line comments (//). Feel free to expirement with the main stylesheet `App.scss`, and any others you might want to change.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Currently, we still need to format the graph and clear some space, so it might not be a bad idea to create a section (not a new page) under the input form for our plot.
