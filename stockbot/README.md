@@ -1,4 +1,4 @@
-#Stock Prediction Bot
+# Stock Prediction Bot
 
 This repo contains both the frontend and backend for the project. The frontend is located in the `/stockbot` folder, where the components are located in `/src`. To open the web application, move into the `/stockbot` directory and open up a terminal. Run `npm start`, and a development server should open in your browser. If there are package dependancy issues, make sure that `package.json` is not empty, and run `npm install` to load all of the required packages. 
 
