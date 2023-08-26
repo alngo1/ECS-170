@@ -27,12 +27,38 @@ html {
   height: 100vh;
   padding: 0;  
 }
-.main-content-container {
+.main-content {
   min-height: 100vh;
-  min-width: 100vw;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  display: flex;
+  min-width:100vw;
+  margin: 0;
+  z-index: 0;
+  overflow: hidden;
+  .main-content-container {
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    section {
+      display: flex;
+      overflow: visible;
+      scroll-snap-align: start;
+      min-width: 100%;
+      min-height: 100%;
+      &:nth-of-type(1) {
+        min-width: 100%;
+        min-height: 100%;
+        flex:1;
+        z-index: 0;
+      }
+      &:nth-of-type(2) {
+        min-width: 100%;
+        min-height: 100%;
+        flex:1;
+        z-index: 0;
+      }
+    }
+  }
 }
 .inactive-landing-container {
   animation-name:animate-dimming;
@@ -65,20 +91,31 @@ html {
   }
 }
 .main-content-wrapper {
-  width: 82.5%;
+  width: 50%;
   min-height: 100%;
-  margin-left: auto;
-  margin-right: auto;
+//  overflow: hidden;
   display: flex;
+  padding-left: 8.75%;
 
- flex-direction: column;
-  padding-top: 8.25%;
+  flex-direction: column;
+  padding-top: 8.5%;
   //background-color: rgba(14, 17, 28, 0.75);
+}
+.main-content-section {
+  display: flex;
+}
+.main-content-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap:2.75em;
+  
+  padding-top: 5rem;
 }
 .main-content-left {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 41.25vw;
   height: 100%;
   justify-content: flex-start;
 }
@@ -159,4 +196,25 @@ html {
   transform: rotate(-160deg);
   position: absolute;
   pointer-events: none;
+}
+
+.prediction-results-container {   // top aligned
+  min-height: 100%;
+  width: 50%;
+  margin-left: auto;
+  display: flex;
+  padding-right: 2.5%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.prediction-results-container-alt {   // center aligned
+  min-height: 100%;
+  width: 50%;
+  margin-left: auto;
+  display: flex;
+  padding-right: 2.5%;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }

@@ -45,8 +45,8 @@ class DataModel(BaseModel):
 @app.post("/run_echo")
 def run_echo_endpoint(data:DataModel):
     print(data)
-    result = run_echo(data.data)
-    return {'result':result}
+    mse, current_set = run_echo(data.data)
+    return {"mse": mse, "predictions": current_set.tolist()}
 
 def run_echo(data, reservoir_size=500, sr=1.2, n=0.005, window=5):
     esn = ESN(n_inputs = 1,
@@ -93,10 +93,12 @@ def compute_something(x: int, y: int) -> int:
     return x + y
 
 def main():
-    data = grab_data('AAPL', '2023-01-01', '2023-07-01', '1d')
+    data = grab_data('AAPL', '2022-01-01', '2022-10-19', '1d')
     print('data: ',len(data))
     prediction = future_pred(data, 500, 1.2, 0.005, 5)
-    print(prediction)
+    mse, echo = run_echo(data, 500, 1.2, 0.005, 5)
+    print(mse, echo)
+    print(len(*echo))
     '''
     st.title("Stock Price Prediction App")
 

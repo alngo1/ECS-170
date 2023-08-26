@@ -4,6 +4,8 @@ import axios from 'axios'
 import InputForm from './InputForm';
 import Popup from './Popup.js'
 import Notification from './Notification.js'
+import Results from './Results';
+import Plot from './Plot'
 import TestPanel from './TestPanel.js'
 import { Oval } from 'react-loader-spinner'
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +23,8 @@ export default function App() {
   const [shouldPopup, setShouldPopup] = useState(false)
   const [status, setStatus] = useState("")
   const [shouldNotify, setShouldNotify] = useState(false)
+  const [showResult, setShowResult] = useState(false)
+  const [mse, setMse] = useState(null)
   const [inputData, setInputData] = useState({
     symbol:'',
     startDate:'',
@@ -32,6 +36,12 @@ export default function App() {
   function handleTest() {
     console.log(stockData.result)
   }
+  function formatDate(inputDate) {
+    const [year, month, day] = inputDate.split('-').map(Number);
+    const date = new Date(year, month - 1, day); 
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+  }
   function handleClose() {
     setFirstRender(false)
     setShouldNotify(false)
@@ -41,41 +51,43 @@ export default function App() {
     setShouldPopup(false)
     setStatus('')
   }
-  useEffect(()=>{
-    if (shouldNotify !== null) {
+  useEffect(()=>{   // dont let user scroll if an error popped up
+    if (shouldNotify) {
         document.body.style.overflow='hidden'
     }
     else {
         document.body.style.overflow='auto'
     }
   }, [shouldNotify])
-  const runEcho = async() => {
+  const runEcho = async(data) => {
     try {
         setStatus('loading')
         const res = await axios.post(`${connection}/run_echo`, 
-          { data:stockData.result
+          { data:data.result
         })
         if (res.data) {
           console.log(res.data)
-          setEchoData(res.data)
+          setMse(res.data.mse)
+          setEchoData(res.data.predictions[0])
           setStatus('success')
         }
     } catch(e) {
         setStatus('error')
-        setErrorMessage(e.message)
+        setErrorMessage(`From run_echo: ${e.message}`)
     } 
   }
-  const futurePred = async() => {
+  const futurePred = async(data) => {
     try {
-      setStatus('loading')
-      if (stockData&&stockData.result.length>=100) {
+      if (data&&data.result.length>=100) {
         const res = await axios.post(`${connection}/future_pred`, 
-          { data:stockData.result
+          { data:data.result
         })
         if (res.data) {
           console.log(res.data)
-          setPredictionData(res.data)
-          setStatus('success')
+          setPredictionData(res.data.result)
+          if (data.result.length < 200) {
+            setStatus('success')
+          }
         }
       }
       else {
@@ -83,31 +95,44 @@ export default function App() {
       }
     } catch(e) {
         setStatus('error')
-        setErrorMessage(e.message)
+        setErrorMessage(`From future_pred: ${e.message}`)
     } 
   }
-  const grabData = async() => {
+  const grabData = async(data) => {
     setStatus('loading')
     try {
       setLoading(true)
- 
       const res = await axios.post(`${connection}/grab_data`, 
-      {symbol:inputData.symbol, 
-       start_date:inputData.startDate, 
-       end_date:inputData.endDate, 
-       intervals:inputData.intervals})
+      {symbol:data.symbol, 
+       start_date:data.startDate, 
+       end_date:data.endDate, 
+       intervals:data.intervals})
       if (res.data) {
         console.log(res.data)
-        setStockData(res.data)
-        setStatus('success')
+        setStockData(res.data) 
+        futurePred(res.data)
+        if (res.data.result.length >= 200) {
+          runEcho(res.data)
+        } 
       }
     } catch(e) {
       setStatus('error')
-      setErrorMessage(e.message)
-      setShouldNotify(!shouldNotify)
+      if (Object.values(inputData).every(value => value !== null && value !== undefined && value !== '')) {
+        setErrorMessage(e.message)
+      } else {
+        setErrorMessage("Ensure that all input fields have valid content.")
+      }
     }
   }
-  useEffect(()=> {
+  const handleSubmit = (data) => {  // passed to inputForm
+      if (data.symbol && data.startDate && data.endDate && data.intervals) {
+        setInputData(data)  // for testing if needed
+        grabData(data)
+      } else {
+        setStatus("error")
+      }
+  }
+  useEffect(()=> {  // for loading status bar
     if (status.length>0) {
       setShouldPopup(true)
       if (status!=='loading') {
@@ -118,49 +143,87 @@ export default function App() {
       }
     }
   }, [status])
-  useEffect(()=> {
+  useEffect(()=> {  // for loading error popup 
     if (errorMessage && errorMessage.length> 0) {
-      setShouldNotify(!shouldNotify)
+      setShouldNotify(true)
     }
   }, [errorMessage])
-  useEffect(()=> {
-    if (inputData.symbol && inputData.startDate && inputData.endDate && inputData.intervals) {
-      grabData()
-    }
+  useEffect(()=> {  // for loading prediction 
     setLoading(false)
-  }, [inputData])
+    if (predictionData && predictionData.length>0 && status==='success') {
+      setShowResult(true)
+    } 
+  }, [predictionData, status])
+  useEffect(()=> {  // for hiding prediction when error is brought up
+    if (shouldNotify) {
+      setShowResult(false)
+    }
+  }, [shouldNotify])
   return (
-    <div className={`main-content-container`}>
-      {<AnimatePresence>
-        { // gives error message
-          (shouldNotify)&&
-          <Popup prompt={'missing'} message={errorMessage} onClose={()=>handleClose()}/>
+    <div className='main-content'>
+      <div className={`main-content-container`}>
+        {<AnimatePresence>
+          { // gives error message
+            (shouldNotify)&&
+            <Popup prompt={'error'} message={errorMessage} onClose={()=>handleClose()}/>
+          }
+        </AnimatePresence>
         }
-      </AnimatePresence>
-      }
-      <div className='header-blur'/>
-      <div className={`main-content-wrapper ${shouldNotify?'inactive-landing-container':(!firstRender)?'active-container':''}`}>
-        <div className='main-content-left'>
-          <div className='header-container '>
-            <span className='test-text-container' onClick={()=>handleTest()}>
-              <p className='header-text'>
-                Stock Price Prediction
+        <section id="top" className='main-content-section'> 
+        <div className={` main-content-wrapper ${shouldNotify?'inactive-landing-container':(!firstRender)?'active-container':''}`}>
+          <div className='main-content-left'>
+            <div className='header-container '>
+              <span className='test-text-container' onClick={()=>handleTest()}>
+                <p className='header-text'>
+                  Stock Price Prediction
+                </p>
+              </span>
+              <p className='header-subtext'>
+                Try our AI project with the stock {'&'} timeframe of your choice.
               </p>
-            </span>
-            <p className='header-subtext'>
-              Try our AI project with the stock {'&'} timeframe of your choice.
-            </p>
+            </div>
+            <InputForm onHandleSubmit={(formData)=>handleSubmit(formData)}/>
           </div>
-          <InputForm onHandleSubmit={(formData)=>setInputData(formData)}/>
         </div>
+    
+        </section>
+        <AnimatePresence>     
+          {(shouldPopup && status.length > 0)&&  // gives request status
+            <Notification status={status} onClose={()=>closePopup()}/>
+          }
+        </AnimatePresence>
+        <section id="mid" className='main-content-results'>
+            <div className='header-container' style={{marginLeft: "8vw"}}>
+              <span className='test-text-container' onClick={()=>handleTest()}>
+                <p className='header-text'>
+                  Prediction Results
+                </p>
+              </span>
+              {(inputData)&&
+                <p className='header-subtext'>
+                  {`Viewing data collected from ${formatDate(inputData.startDate)} - ${formatDate(inputData.endDate)}.`} 
+                </p>
+              }
+            </div>
+           
+          <div style={{minWidth:'100vw', display:"flex"}}>
+            <AnimatePresence>
+              {(echoData && echoData.length > 0 && mse)&&
+                <Plot echoData={echoData} stockData={stockData.result.slice(0,200)} inputData={inputData}/>
+              }
+            </AnimatePresence>
+            <div className='prediction-results-container-alt'>
+              {(predictionData && predictionData.length>0 && mse)&&
+              <AnimatePresence>
+                {(showResult)&&
+                  <Results data={predictionData} input={stockData.result} error={mse} onClose={()=>setShowResult(false)}/>
+                }
+              </AnimatePresence>
+              }
+            </div>
+          </div>
+        </section>
       </div>
-      <AnimatePresence>     
-         {(shouldPopup && status.length > 0)&&  // gives request status
-          <Notification status={status} onClose={()=>closePopup()}/>
-         }
-      </AnimatePresence>
-      <TestPanel data={inputData} onGrabData={()=>grabData()} onRunEcho={()=>runEcho()} onPredict={()=>futurePred()}/>
-      <div className='footer-blur'/>
     </div>
   )
 }

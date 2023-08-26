@@ -38,7 +38,7 @@ export default function Popup({ prompt, message, onClose }) {
           </p>
           <div className="notification-header-subtext-container">
               <p className={"notification-header-subtext"}>
-                  {(prompt==="error")?`An error occured, please confirm that the inputs are valid.`:
+                  {(prompt==="error")?`An error occured, please check the logs of the backend server for more information.`:
                   `This feature is currently unavailable, please check back again soon.`}
               </p>
               <p className={"notification-header-subtext"}>
